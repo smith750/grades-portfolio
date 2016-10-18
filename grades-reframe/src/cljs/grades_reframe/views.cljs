@@ -28,26 +28,30 @@
 (defn format-grade [grade-value delta]
   (.toFixed grade-value delta))
 
+(defn calculate-upper-grade [grade lower-bound delta]
+  (let [one-higher-lower-bound (* grade (+ lower-bound 0.1))]
+  (if (= lower-bound 0.9)
+    (* grade 1) ;; cheap cast
+    (- one-higher-lower-bound (if (= delta 0) 1 0.1)))))
+
 (defn grade-amount-row [letter-grade lower-bound]
   (let [grade (re-frame/subscribe [:grade])
         delta (re-frame/subscribe [:delta])]
   (fn []
-    (let [one-higher-lower-bound (* @grade (+ lower-bound 0.1))
-          lower-grade (* @grade lower-bound)
-          upper-grade (if (= lower-bound 0.9) (* @grade 1) (- one-higher-lower-bound (if (= @delta 0) 1 0.1)))]
+    (let [lower-grade (* @grade lower-bound)
+          upper-grade (calculate-upper-grade @grade lower-bound @delta)]
     [:tr
       [:td letter-grade]
       [:td (format-grade lower-grade @delta)]
       [:td (format-grade upper-grade @delta)]
     ]))))
 
-(defn grade-failure-row []
+(defn grade-failure-row [letter-grade]
   (let [grade (re-frame/subscribe [:grade])
         delta (re-frame/subscribe [:delta])]
     (fn []
-      (let [one-higher-lower-bound (* @grade 0.6)
-            upper-grade (- one-higher-lower-bound (if (= @delta 0) 1 0.1))]
-      [:tr [:td "F"] [:td {:colSpan "2"} (format-grade upper-grade @delta) " and below"]]
+      (let [upper-grade (calculate-upper-grade @grade 0.5 @delta)]
+      [:tr [:td letter-grade] [:td {:colSpan "2"} (format-grade upper-grade @delta) " and below"]]
     ))))
 
 (defn grade-amounts-table []
@@ -57,7 +61,7 @@
       [grade-amount-row "B" 0.8]
       [grade-amount-row "C" 0.7]
       [grade-amount-row "D" 0.6]
-      [grade-failure-row]
+      [grade-failure-row "F"]
     ]])
 
 (defn parseable-number? [s]

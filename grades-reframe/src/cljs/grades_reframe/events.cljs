@@ -11,8 +11,7 @@
 (re-frame/reg-event-db
   :grade-change
   (fn [app-db [_ new-grade]]
-    (swap! app-db assoc :grade new-grade)
-    (swap! app-db assoc :delta (if (= new-grade "") (:delta @app-db) (if (<= new-grade 10) 1 (if (>= new-grade 40) 0 (:delta @app-db)))))
+    (swap! app-db assoc :grade new-grade :delta (if (= new-grade "") (:delta @app-db) (if (<= new-grade 10) 1 (if (>= new-grade 40) 0 (:delta @app-db)))))
     app-db))
 
 (re-frame/reg-event-db
