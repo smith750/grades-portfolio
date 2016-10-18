@@ -23,8 +23,7 @@
       (fn []
         [:div
           [:label "Show decimal points? "
-            [:input {:type "radio" :checked (not= @delta 0) :on-change #(re-frame/dispatch [:delta-change 1])}] "Yes"
-            [:input {:type "radio" :checked (= @delta 0) :on-change #(re-frame/dispatch [:delta-change 0])}] "No"]])))
+            [:input {:type "checkbox" :checked (not= @delta 0) :on-click #(re-frame/dispatch [:toggle-delta])}]]])))
 
 (defn format-grade [grade-value delta]
   (.toFixed grade-value delta))
@@ -46,7 +45,8 @@
   (let [grade (re-frame/subscribe [:grade])
         delta (re-frame/subscribe [:delta])]
     (fn []
-      (let [upper-grade (* @grade 0.59)]
+      (let [one-higher-lower-bound (* @grade 0.6)
+            upper-grade (- one-higher-lower-bound (if (= @delta 0) 1 0.1))]
       [:tr [:td "F"] [:td {:colSpan "2"} (format-grade upper-grade @delta) " and below"]]
     ))))
 

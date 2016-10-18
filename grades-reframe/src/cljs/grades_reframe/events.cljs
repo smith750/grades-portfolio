@@ -12,11 +12,13 @@
   :grade-change
   (fn [app-db [_ new-grade]]
     (swap! app-db assoc :grade new-grade)
-    ;;(swap! app-db assoc :delta (if (= new-grade "") (:delta @app-db) (if (<= new-grade-numeric 20) 1 (if (>= new-grade-numeric 40) 0 (:delta @app-db)))))
+    (swap! app-db assoc :delta (if (= new-grade "") (:delta @app-db) (if (<= new-grade 10) 1 (if (>= new-grade 40) 0 (:delta @app-db)))))
     app-db))
 
 (re-frame/reg-event-db
-  :delta-change
-  (fn [app-db [_ new-delta]]
-    (swap! app-db assoc :delta new-delta)
-    app-db))
+  :toggle-delta
+  (fn [app-db]
+    (let [delta (:delta @app-db)
+          new-delta (if (= delta 0) 1 0)]
+      (swap! app-db assoc :delta new-delta)
+    app-db)))
