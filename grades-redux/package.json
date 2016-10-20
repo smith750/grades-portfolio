@@ -23,10 +23,11 @@
     "lodash": "3.10.1",
     "react": "0.14.8",
     "react-dom": "0.14.8",
-    "react-router": "2.0.1",
     "react-dropzone": "2.2.4",
+    "react-redux": "^4.4.5",
+    "react-router": "2.0.1",
+    "redux": "~3.6.0",
     "webpack": "1.13.1",
-    "webpack-dev-server": "1.13.0",
-    "redux": "~3.6.0"
+    "webpack-dev-server": "1.13.0"
   }
 }
