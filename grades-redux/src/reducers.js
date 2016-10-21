@@ -1,5 +1,5 @@
 import { Map } from 'immutable';
-export { CHANGE_GRADE, TOGGLE_DELTA } from './actions';
+import { CHANGE_GRADE, TOGGLE_DELTA } from './actions';
 
 const initialState = Map({
   "grade": "100",

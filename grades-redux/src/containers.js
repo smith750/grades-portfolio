@@ -1,4 +1,4 @@
-import { gradeChange } from './actions';
+import { changeGrade } from './actions';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {
@@ -15,6 +15,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const GradesContainer = connect(mapStateToProps, mapDispatchToProps);
-
-export default GradesContainer;
+export const GradesContainer = connect(mapStateToProps, mapDispatchToProps);
