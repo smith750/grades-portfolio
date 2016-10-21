@@ -19,11 +19,11 @@
 
 (defn delta-entry []
   (let [delta (re-frame/subscribe [:delta])
-        grade (re-frame/subscribe [:grade])]
+        should-checked (not= @delta 0)]
       (fn []
         [:div
           [:label "Show decimal points? "
-            [:input {:type "checkbox" :checked (not= @delta 0) :on-click #(re-frame/dispatch [:toggle-delta])}]]])))
+            [:input {:type "checkbox" :checked should-checked :on-click #(re-frame/dispatch [:toggle-delta])}]]])))
 
 (defn format-grade [grade-value delta]
   (.toFixed grade-value delta))
@@ -31,7 +31,7 @@
 (defn calculate-upper-grade [grade lower-bound delta]
   (let [one-higher-lower-bound (* grade (+ lower-bound 0.1))]
   (if (= lower-bound 0.9)
-    (* grade 1) ;; cheap cast
+    (js/parseFloat grade)
     (- one-higher-lower-bound (if (= delta 0) 1 0.1)))))
 
 (defn grade-amount-row [letter-grade lower-bound]

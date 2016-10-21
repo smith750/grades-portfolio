@@ -27,37 +27,37 @@ const DeltaInput = ({ deltaChecked, onDeltaChange }) => (
   </div>
 );
 
-const GradeRow = ({ grade, deltaDiff, letterGrade, lowerBound }) => {
+const GradeRow = ({ grade, delta, deltaDiff, letterGrade, lowerBound }) => {
   let numLowerBound = parseFloat(lowerBound);
   let lowerGrade = grade * lowerBound;
-  let oneLower = (numLowerBound === 0.9) ? 0 : 1;
+  let oneLower = (numLowerBound === 0.9) ? 0 : deltaDiff;
   let upperGrade = (grade * (numLowerBound + 0.1)) - oneLower;
   return (
-    <tr><td>{letterGrade}</td><td>{lowerGrade.toFixed(deltaDiff)}</td><td>{upperGrade.toFixed(deltaDiff)}</td></tr>
+    <tr><td>{letterGrade}</td><td>{upperGrade.toFixed(delta)}</td><td>{lowerGrade.toFixed(delta)}</td></tr>
   );
 };
 
-const GradeFailureRow = ({grade, deltaDiff, letterGrade}) => {
+const GradeFailureRow = ({grade, delta, deltaDiff, letterGrade}) => {
   let upperGrade = (grade * 0.6) - deltaDiff;
   return (
-    <tr><td>{letterGrade}</td><td colSpan="2">{upperGrade} and below</td></tr>
+    <tr><td>{letterGrade}</td><td colSpan="2">{upperGrade.toFixed(delta)} and below</td></tr>
   );
 };
 
-const DisplayGradeTable = ({ grade }) => {
-  return (/^\d+\.*\d*/.test(grade))
-    ? (<GradeTable grade={grade} />)
+const DisplayGradeTable = ({ grade, delta, deltaDiff }) => {
+  return (/^\d+\.*\d*$/.test(grade))
+    ? (<GradeTable grade={grade} delta={delta} deltaDiff={deltaDiff} />)
     : (<span />);
 };
 
-const GradeTable = ({ grade, deltaDiff }) => (
+const GradeTable = ({ grade, delta, deltaDiff }) => (
   <table>
     <tbody>
-      <GradeRow grade={grade} deltaDiff={deltaDiff} letterGrade="A" lowerBound="0.9"/>
-      <GradeRow grade={grade} deltaDiff={deltaDiff} letterGrade="B" lowerBound="0.8"/>
-      <GradeRow grade={grade} deltaDiff={deltaDiff} letterGrade="C" lowerBound="0.7"/>
-      <GradeRow grade={grade} deltaDiff={deltaDiff} letterGrade="D" lowerBound="0.6"/>
-      <GradeFailureRow grade={grade} deltaDiff={deltaDiff} letterGrade="F"/>
+      <GradeRow grade={grade} delta={delta} deltaDiff={deltaDiff} letterGrade="A" lowerBound="0.9"/>
+      <GradeRow grade={grade} delta={delta} deltaDiff={deltaDiff} letterGrade="B" lowerBound="0.8"/>
+      <GradeRow grade={grade} delta={delta} deltaDiff={deltaDiff} letterGrade="C" lowerBound="0.7"/>
+      <GradeRow grade={grade} delta={delta} deltaDiff={deltaDiff} letterGrade="D" lowerBound="0.6"/>
+      <GradeFailureRow grade={grade} delta={delta} deltaDiff={deltaDiff} letterGrade="F"/>
     </tbody>
   </table>
 );
@@ -70,7 +70,6 @@ const ContainedGradeTable = GradeDeltaContainer(DisplayGradeTable);
 const Grades = () => (
   <div>
     <h3>Grades</h3>
-    <ContainedGradesDisplay/>
     <ContainedGradesInput/>
     <ContainedDeltaInput/>
     <ContainedGradeTable/>

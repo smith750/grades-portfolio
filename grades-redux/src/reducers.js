@@ -9,7 +9,12 @@ const initialState = Map({
 export default function gradeApp(state = initialState, action) {
   switch (action.type) {
     case CHANGE_GRADE:
-      return state.set("grade", action.newGrade);
+      const updatedDelta = (action.newGrade < 10)
+        ? 1
+        : (action.newGrade >= 40)
+          ? 0
+          : state.get("delta");
+      return state.set("grade", action.newGrade).set("delta",updatedDelta);
     case TOGGLE_DELTA:
       const newDelta = (state.get("delta") === 0) ? 1 : 0;
       return state.set("delta", newDelta);
