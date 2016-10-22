@@ -11,7 +11,7 @@
      :compiler {:main 'grades-omnext.core
                 :asset-path "js"
                 :output-to "resources/public/js/main.js"
-                :output-dir "resources/public/js"
+                :output-dir "resources/public/js/out"
                 :verbose true}}]})
 
 (ra/cljs-repl)

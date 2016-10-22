@@ -1,0 +1,14 @@
+{
+  :http-server-root "public" ;; default
+  :server-port 3449          ;; default
+  :open-file-command "emacsclient"
+  :builds [{:id "dev",
+            :source-paths ["src"],
+            :figwheel true
+            :build-options
+            {:main grades-omnext.core,
+             :asset-path "js/target",
+             :output-to "resources/public/js/main.js",
+             :output-dir "resources/public/js/target",
+             :source-map-timestamp true}}]
+}
