@@ -54,15 +54,10 @@
       [grade-failure-row "F"]
     ]])
 
-(defn parseable-number? [s]
-  (let [not-nil? (complement nil?)]
-    (not-nil? (re-find #"^\d+\.*\d*$" s))
-  ))
-
 (defn grade-amounts-table-display []
   (let [grade (re-frame/subscribe [:grade])]
     (fn []
-      (if (parseable-number? @grade) [grade-amounts-table] [:span]))))
+      (if (utils/parseable-number? @grade) [grade-amounts-table] [:span]))))
 
 (defn main-panel []
       [:div
