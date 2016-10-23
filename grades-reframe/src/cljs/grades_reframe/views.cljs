@@ -1,7 +1,6 @@
 (ns grades-reframe.views
     (:require [re-frame.core :as re-frame]
-              [goog.string :as gstring]
-              [goog.string.format]))
+              [grades-reframe.utils :as utils]))
 
 (defn grade-display []
   (let [grade (re-frame/subscribe [:grade])]
@@ -25,33 +24,24 @@
           [:label "Show decimal points? "
             [:input {:type "checkbox" :checked should-checked :on-click #(re-frame/dispatch [:toggle-delta])}]]])))
 
-(defn format-grade [grade-value delta]
-  (.toFixed grade-value delta))
-
-(defn calculate-upper-grade [grade lower-bound delta]
-  (let [one-higher-lower-bound (* grade (+ lower-bound 0.1))]
-  (if (= lower-bound 0.9)
-    (js/parseFloat grade)
-    (- one-higher-lower-bound (if (= delta 0) 1 0.1)))))
-
 (defn grade-amount-row [letter-grade lower-bound]
   (let [grade (re-frame/subscribe [:grade])
         delta (re-frame/subscribe [:delta])]
   (fn []
     (let [lower-grade (* @grade lower-bound)
-          upper-grade (calculate-upper-grade @grade lower-bound @delta)]
+          upper-grade (utils/calculate-upper-grade @grade lower-bound @delta)]
     [:tr
       [:td letter-grade]
-      [:td (format-grade lower-grade @delta)]
-      [:td (format-grade upper-grade @delta)]
+      [:td (utils/format-grade upper-grade @delta)]
+      [:td (utils/format-grade lower-grade @delta)]
     ]))))
 
 (defn grade-failure-row [letter-grade]
   (let [grade (re-frame/subscribe [:grade])
         delta (re-frame/subscribe [:delta])]
     (fn []
-      (let [upper-grade (calculate-upper-grade @grade 0.5 @delta)]
-      [:tr [:td letter-grade] [:td {:colSpan "2"} (format-grade upper-grade @delta) " and below"]]
+      (let [upper-grade (utils/calculate-upper-grade @grade 0.5 @delta)]
+      [:tr [:td letter-grade] [:td {:colSpan "2"} (utils/format-grade upper-grade @delta) " and below"]]
     ))))
 
 (defn grade-amounts-table []
