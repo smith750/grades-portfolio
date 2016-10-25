@@ -1,5 +1,7 @@
 (ns grades-omnext.core
   (:require [goog.dom :as gdom]
+            [grades-omnext.views :as grade-views]
+            [grades-omnext.store :as app-store]
             [om.next :as om :refer-macros [defui]]
             [om.dom :as dom]))
 
@@ -7,24 +9,18 @@
 
 (println "running grades app")
 
-(defn GradeDisplay [grade]
-  (dom/div nil (str "The grade is " grade)))
-
-(defn GradeInput [grade]
-  (dom/div nil
-    (dom/label nil "Grade "
-      (dom/input #js {:type "text" :value grade}))))
-
 (defui GradeApp
   Object
   (render [this]
     (dom/div nil
-      (GradeDisplay "10")
-      (GradeInput "10"))))
+      (grade-views/grade-display)
+      (grade-views/grade-input))))
 
-(def grade-app (om/factory GradeApp))
+(om/add-root! app-store/reconciler GradeApp (gdom/getElement "main"))
 
-(js/ReactDOM.render (grade-app) (gdom/getElement "main"))
+; (def grade-app (om/factory GradeApp))
+;
+; (js/ReactDOM.render (grade-app) (gdom/getElement "main"))
 
 (defn on-js-reload []
   ;; optionally touch your app-state to force rerendering depending on
