@@ -7,7 +7,7 @@
 (defui GradeDisplay
   static om/IQuery
   (query [this]
-    '[:grade])
+    '[:app/grade])
   Object
   (render [this]
     (print (om/props this))

@@ -21,4 +21,4 @@
 (def reconciler
   (om/reconciler
     {:state app-state
-      :parser (om/parser {:read read})}))
+     :parser (om/parser {:read read})}))

@@ -12,9 +12,10 @@
 (defui GradeApp
   Object
   (render [this]
+    (println "rendering GradeApp, props? " (om/props this))
     (dom/div nil
-      (grade-views/grade-display)
-      (grade-views/grade-input))))
+      (grade-views/grade-display (om/props this))
+      (grade-views/grade-input (om/props this)))))
 
 (om/add-root! app-store/reconciler GradeApp (gdom/getElement "main"))
 
