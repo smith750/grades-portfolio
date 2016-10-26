@@ -15,11 +15,15 @@
       (dom/div nil (str "The grade is " grade)))))
 
 (defui GradeInput
+  static om/IQuery
+  (query [this]
+    '[:app/grade])
   Object
   (render [this]
-    (dom/div nil
-      (dom/label nil "Grade "
-        (dom/input #js {:type "text" :value "100"})))))
+    (let [{:keys [grade]} (om/props this)]
+      (dom/div nil
+        (dom/label nil "Grade "
+          (dom/input #js {:type "text" :value grade}))))))
 
 (def grade-display (om/factory GradeDisplay))
 (def grade-input (om/factory GradeInput))

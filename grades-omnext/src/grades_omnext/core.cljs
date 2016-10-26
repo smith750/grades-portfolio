@@ -9,13 +9,15 @@
 
 (defui GradeApp
   static om/IQuery
-  (query [this] `[{:grade ~(om/get-query grade-views/GradeDisplay)}])
+  (query [this] `[{:app/grade ~(om/get-query grade-views/GradeDisplay)}
+                  {:app/grade ~(om/get-query grade-views/GradeInput)}])
   Object
   (render [this]
-    (let [{:keys [grade]} (om/props this)]
+    (let [{:keys [app/grade]} (om/props this)]
+      (println "Rendering GradeApp, props? " (om/props this))
       (dom/div nil
         (grade-views/grade-display {:grade grade})
-        (grade-views/grade-input (om/props this))))))
+        (grade-views/grade-input {:grade grade})))))
 
 (om/add-root! app-store/reconciler GradeApp (gdom/getElement "main"))
 
