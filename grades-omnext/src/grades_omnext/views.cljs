@@ -10,9 +10,9 @@
     '[:app/grade])
   Object
   (render [this]
-    (print (om/props this))
+    (print "GradeDisplay props " (om/props this))
     (let [{:keys [grade]} (om/props this)]
-    (dom/div nil (str "The grade is " grade)))))
+      (dom/div nil (str "The grade is " grade)))))
 
 (defui GradeInput
   Object

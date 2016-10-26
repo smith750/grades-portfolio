@@ -7,15 +7,15 @@
 
 (enable-console-print!)
 
-(println "running grades app")
-
 (defui GradeApp
+  static om/IQuery
+  (query [this] `[{:grade ~(om/get-query grade-views/GradeDisplay)}])
   Object
   (render [this]
-    (println "rendering GradeApp, props? " (om/props this))
-    (dom/div nil
-      (grade-views/grade-display (om/props this))
-      (grade-views/grade-input (om/props this)))))
+    (let [{:keys [grade]} (om/props this)]
+      (dom/div nil
+        (grade-views/grade-display {:grade grade})
+        (grade-views/grade-input (om/props this))))))
 
 (om/add-root! app-store/reconciler GradeApp (gdom/getElement "main"))
 
