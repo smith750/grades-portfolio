@@ -2,7 +2,7 @@
   (:require
     [om.next :as om]))
 
-(def app-state (atom {:app/grade "99"}))
+(def app-state (atom {:app/grade "100"}))
 
 (defmulti read (fn [env key params] key))
 
@@ -13,12 +13,19 @@
       {:value v}
       {:value :not-found})))
 
-(defmethod read :grade
+(defmethod read :app/grade
   [{:keys [state] :as env} key _]
   (println "reading state from grade")
   {:value (:app/grade @state)})
 
+(defn mutate [{:keys [state] :as env} key params]
+  (println "mutate keys " key " state " state)
+  (if (= 'app/grade key)
+    {:value {:keys [:app/grade]}
+      :action #(swap! state assoc :app/grade key)}
+    {:value :not-found}))
+
 (def reconciler
   (om/reconciler
     {:state app-state
-     :parser (om/parser {:read read})}))
+     :parser (om/parser {:read read} {:mutate mutate})}))
