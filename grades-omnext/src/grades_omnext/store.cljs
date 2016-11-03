@@ -4,7 +4,7 @@
 
 (def app-state (atom {:app/grade "100"}))
 
-(defmulti read (fn [env key params] key))
+(defmulti read om/dispatch)
 
 (defmethod read :default [{:keys [state] :as env} key params]
   (let [st @state]
@@ -18,14 +18,24 @@
   (println "reading state from grade " @state " key " key)
   {:value (:app/grade @state)})
 
+; (defmulti mutate om/dispatch)
+;
+; (defmethod mutate 'app/update-grade [{:keys [state]} _ {:keys [new-grade]}]
+;   (println "mutating for app/update-grade " @state " new-grade " new-grade)
+;   {:action
+;     (fn []
+;       (swap! state assoc :app/grade new-grade))})
+
 (defn mutate [{:keys [state] :as env} key params]
-  (println "mutate keys " key " state " @state)
-  (if (= 'app/grade key)
+  (println "mutating keys " key " state " @state " params " params)
+  (if (= 'app/update-grade key)
     {:value {:keys [:app/grade]}
-      :action #(swap! state assoc :app/grade key)}
+      :action #(swap! state assoc :app/grade (:new-grade params))}
     {:value :not-found}))
+
+(def parser (om/parser {:read read :mutate mutate}))
 
 (def reconciler
   (om/reconciler
     {:state app-state
-     :parser (om/parser {:read read :mutate mutate})}))
+     :parser parser}))
