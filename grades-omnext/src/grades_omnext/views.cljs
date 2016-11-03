@@ -23,7 +23,14 @@
     (let [{:keys [grade]} (om/props this)]
       (dom/div nil
         (dom/label nil "Grade "
-          (dom/input #js {:type "text" :value grade :onChange (fn [event] (om/transact! this '[(grade/update '{:new-grade (-> event .-target .-value)})]))}))))))
+          (dom/input
+              #js {:type "text"
+                   :value grade
+                   :onChange
+                    (fn [event]
+                      (let [new-grade (-> event .-target .-value)]
+                      (println "new grade is " new-grade)
+                      (om/transact! this '[(grade/update {:new-grade new-grade})])))}))))))
 
 (def grade-display (om/factory GradeDisplay))
 (def grade-input (om/factory GradeInput))

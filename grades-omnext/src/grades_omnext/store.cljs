@@ -15,11 +15,11 @@
 
 (defmethod read :app/grade
   [{:keys [state] :as env} key _]
-  (println "reading state from grade")
+  (println "reading state from grade " @state " key " key)
   {:value (:app/grade @state)})
 
 (defn mutate [{:keys [state] :as env} key params]
-  (println "mutate keys " key " state " state)
+  (println "mutate keys " key " state " @state)
   (if (= 'app/grade key)
     {:value {:keys [:app/grade]}
       :action #(swap! state assoc :app/grade key)}
@@ -28,4 +28,4 @@
 (def reconciler
   (om/reconciler
     {:state app-state
-     :parser (om/parser {:read read} {:mutate mutate})}))
+     :parser (om/parser {:read read :mutate mutate})}))
