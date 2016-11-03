@@ -28,9 +28,10 @@
                    :value grade
                    :onChange
                     (fn [event]
-                      (let [new-grade-map {:new-grade (-> event .-target .-value)}]
-                      (println "mutating " new-grade-map)
-                      (om/transact! this '[(app/update-grade new-grade-map)])))}))))))
+                      (let [new-grade (-> event .-target .-value)]
+                      (println "mutating " new-grade)
+                      (om/transact! this `[(app/update-grade {:new-grade ~new-grade}) :app/grade])
+                      (om/set-state! this {:app/grade new-grade})))}))))))
 
 (def grade-display (om/factory GradeDisplay))
 (def grade-input (om/factory GradeInput))
