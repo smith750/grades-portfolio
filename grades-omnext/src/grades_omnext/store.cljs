@@ -1,6 +1,7 @@
 (ns grades-omnext.store
   (:require
-    [om.next :as om]))
+    [om.next :as om]
+    [grades-omnext.utils :as utils]))
 
 (def app-state (atom {:app/grade "100" :app/delta 0}))
 
@@ -28,7 +29,7 @@
   (cond
     (= 'app/update-grade key)
       {:value {:keys [:app/grade]}
-        :action #(swap! state assoc :app/grade (:new-grade params))}
+        :action #(swap! state assoc :app/grade (:new-grade params) :app/delta (utils/update-delta (:new-grade params) (:app/delta @state)))}
     (= 'app/toggle-delta)
       (let [new-delta (if (= (:app/delta @state) 0) 1 0)]
       {:value {:keys [:app/delta]}
