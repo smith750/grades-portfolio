@@ -16,8 +16,8 @@
     (let [{:keys [app/grade]} (om/props this)]
       (println "Rendering GradeApp, props? " (om/props this))
       (dom/div nil
-        (grade-views/grade-display {:grade grade})
-        (grade-views/grade-input {:grade grade})))))
+        (grade-views/grade-display {:app/grade grade})
+        (grade-views/grade-input {:app/grade grade})))))
 
 (om/add-root! app-store/reconciler GradeApp (gdom/getElement "main"))
 

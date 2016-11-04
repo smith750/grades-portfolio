@@ -7,20 +7,20 @@
 (defui GradeDisplay
   static om/IQuery
   (query [this]
-    '[:app/grade])
+    [:app/grade])
   Object
   (render [this]
     (print "GradeDisplay props " (om/props this))
-    (let [{:keys [grade]} (om/props this)]
+    (let [{grade :app/grade} (om/props this)]
       (dom/div nil (str "The grade is " grade)))))
 
 (defui GradeInput
   static om/IQuery
   (query [this]
-    '[:app/grade])
+    [:app/grade])
   Object
   (render [this]
-    (let [{:keys [grade]} (om/props this)]
+    (let [{grade :app/grade} (om/props this)]
       (dom/div nil
         (dom/label nil "Grade "
           (dom/input
@@ -30,8 +30,7 @@
                     (fn [event]
                       (let [new-grade (-> event .-target .-value)]
                       (println "mutating " new-grade)
-                      (om/transact! this `[(app/update-grade {:new-grade ~new-grade}) :app/grade])
-                      (om/set-state! this {:app/grade new-grade})))}))))))
+                      (om/transact! this `[(app/update-grade {:new-grade ~new-grade}) :app/grade])))}))))))
 
 (def grade-display (om/factory GradeDisplay))
 (def grade-input (om/factory GradeInput))
