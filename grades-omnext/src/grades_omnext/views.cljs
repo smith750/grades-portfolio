@@ -38,7 +38,6 @@
   (render [this]
     (let [{delta :app/delta} (om/props this)
            should-checked (not= delta 0)]
-           (println "rendering delta delta = " delta " and should-check = " should-checked)
       (dom/div nil
         (dom/label nil "Show decimal points? "
           (dom/input #js {:type "checkbox"
@@ -58,7 +57,6 @@
   (dom/tr nil (dom/td nil letter-grade) (dom/td #js {:colSpan "2"} (utils/format-grade upper-grade delta) " and below"))))
 
 (defn grade-amounts-table [grade delta]
-  (println "rendering grade amounts table grade = " grade " delta = " delta)
   (dom/table nil
     (dom/tbody nil
       (grade-amount-row grade delta "A" 0.9)
