@@ -11,15 +11,18 @@
   static om/IQuery
   (query [this] `[{:app/grade ~(om/get-query grade-views/GradeDisplay)}
                   {:app/grade ~(om/get-query grade-views/GradeInput)}
-                  {:app/grade ~(om/get-query grade-views/GradeTable)}])
+                  {:app/grade ~(om/get-query grade-views/GradeTable)}
+                  {:app/delta ~(om/get-query grade-views/GradeTable)}
+                  {:app/delta ~(om/get-query grade-views/DeltaEntry)}])
   Object
   (render [this]
-    (let [{:keys [app/grade]} (om/props this)]
+    (let [{:keys [app/grade app/delta]} (om/props this)]
       (println "Rendering GradeApp, props? " (om/props this))
       (dom/div nil
         (grade-views/grade-display {:app/grade grade})
         (grade-views/grade-input {:app/grade grade})
-        (grade-views/grade-table {:app/grade grade})))))
+        (grade-views/delta-entry {:app/delta delta})
+        (grade-views/grade-table {:app/grade grade :app/delta delta})))))
 
 (om/add-root! app-store/reconciler GradeApp (gdom/getElement "main"))
 

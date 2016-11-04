@@ -2,7 +2,7 @@
   (:require
     [om.next :as om]))
 
-(def app-state (atom {:app/grade "100"}))
+(def app-state (atom {:app/grade "100" :app/delta 0}))
 
 (defmulti read om/dispatch)
 
@@ -25,10 +25,15 @@
 ;       (swap! state assoc :app/grade new-grade))})
 
 (defn mutate [{:keys [state] :as env} key params]
-  (if (= 'app/update-grade key)
-    {:value {:keys [:app/grade]}
-      :action #(swap! state assoc :app/grade (:new-grade params))}
-    {:value :not-found}))
+  (cond
+    (= 'app/update-grade key)
+      {:value {:keys [:app/grade]}
+        :action #(swap! state assoc :app/grade (:new-grade params))}
+    (= 'app/toggle-delta)
+      (let [new-delta (if (= (:app/delta @state) 0) 1 0)]
+      {:value {:keys [:app/delta]}
+        :action #(swap! state assoc :app/delta new-delta)})
+    :else {:value :not-found}))
 
 (def parser (om/parser {:read read :mutate mutate}))
 
