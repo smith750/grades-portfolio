@@ -1,7 +1,8 @@
 (ns grades-reframe.events
     (:require [re-frame.core :as re-frame]
               [grades-reframe.db :as db]
-              [reagent.core :as reagent]))
+              [reagent.core :as reagent]
+              [grades-reframe.utils :as utils]))
 
 (re-frame/reg-event-db
  :initialize-db
@@ -11,7 +12,9 @@
 (re-frame/reg-event-db
   :grade-change
   (fn [app-db [_ new-grade]]
-    (swap! app-db assoc :grade new-grade :delta (if (= new-grade "") (:delta @app-db) (if (<= new-grade 10) 1 (if (>= new-grade 40) 0 (:delta @app-db)))))
+    (swap! app-db assoc
+      :grade new-grade
+      :delta (utils/update-delta new-grade (:delta @app-db)))
     app-db))
 
 (re-frame/reg-event-db

@@ -12,3 +12,10 @@
 (defn parseable-number? [s]
   (let [not-nil? (complement nil?)]
     (not-nil? (re-find #"^\d+\.*\d*$" s))))
+
+(defn update-delta [grade current-delta]
+  (cond
+    (= grade "") current-delta
+    (<= grade 10) 1
+    (>= grade 40) 0
+    :else current-delta))
