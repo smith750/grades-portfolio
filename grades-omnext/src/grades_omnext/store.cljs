@@ -8,14 +8,12 @@
 
 (defmethod read :default [{:keys [state] :as env} key params]
   (let [st @state]
-    (println "reading state from default")
     (if-let [[_ v] (find st key)]
       {:value v}
       {:value :not-found})))
 
 (defmethod read :app/grade
   [{:keys [state] :as env} key _]
-  (println "reading state from grade " @state " key " key)
   {:value (:app/grade @state)})
 
 ; (defmulti mutate om/dispatch)
@@ -27,7 +25,6 @@
 ;       (swap! state assoc :app/grade new-grade))})
 
 (defn mutate [{:keys [state] :as env} key params]
-  (println "mutating keys " key " state " @state " params " params)
   (if (= 'app/update-grade key)
     {:value {:keys [:app/grade]}
       :action #(swap! state assoc :app/grade (:new-grade params))}
