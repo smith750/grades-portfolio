@@ -10,9 +10,6 @@
 (defui GradeApp
   static om/IQuery
   (query [this] `[{:app/grade ~(om/get-query grade-views/GradeDisplay)}
-                  {:app/grade ~(om/get-query grade-views/GradeInput)}
-                  {:app/grade ~(om/get-query grade-views/GradeTable)}
-                  {:app/delta ~(om/get-query grade-views/GradeTable)}
                   {:app/delta ~(om/get-query grade-views/DeltaEntry)}])
   Object
   (render [this]
