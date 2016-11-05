@@ -1,14 +1,43 @@
 module Main exposing (..)
 
-import Html exposing (..)
-import Html.App as Html
+import Html exposing (Attribute, div, input, text, h2)
+import Html.App as App
 import Html.Attributes exposing (..)
+import Html.Events exposing (onInput)
+import String
+
+
 
 main : Program Never
 main =
-    Html.program
-        { init = init
+    App.beginnerProgram
+        { model = model
         , view = view
         , update = update
-        , subscriptions = subscriptions
         }
+
+type alias Model =
+  {
+    grade: String
+  }
+
+model : Model
+model = {
+  grade = "100"
+}
+
+type Msg = UpgradeGrade String
+
+update : Msg -> Model - > Model
+update msg model =
+  case msg of
+    UpdateGrade newGrade ->
+      { model | grade = newGrade }
+
+view : Model -> Html Msg
+view model =
+  div []
+    [
+      h2 [] [ text "Grades" ]
+      div [] [ text "Grade is " ++ model.grade ]
+    ]
