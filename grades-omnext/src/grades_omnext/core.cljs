@@ -15,6 +15,7 @@
   (render [this]
     (println "Rendering GradeApp, props? " (om/props this))
     (dom/div nil
+      (dom/h2 nil "Grades")
       (grade-views/grade-input (om/props this))
       (grade-views/delta-entry (om/props this))
       (grade-views/grade-table (om/props this)))))
