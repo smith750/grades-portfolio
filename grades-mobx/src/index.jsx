@@ -6,10 +6,19 @@ import App from './App';
 
 const appState = new AppState();
 
+class MainComponent extends React.Component {
+  render() {
+    return
+    (<AppContainer>
+      <App appState={appState} />
+    </AppContainer>);
+  }
+}
+
 render(
-  <AppContainer>
-    <App appState={appState} />
-  </AppContainer>,
+<AppContainer>
+  <App appState={appState} />
+</AppContainer>,
   document.getElementById('root')
 );
 
